@@ -8,7 +8,7 @@ import { ParticleBackground } from '../components/ParticleBackground'
 function App() {
   return (
     <>
-      <GoogleOAuthProvider>
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
         <ParticleBackground />
         <div className="container">
           <a href="https://vitejs.dev" target="_blank">
@@ -25,7 +25,7 @@ function App() {
             }}
           />
         </div>
-      </GoogleOAuthProvider> 
+      </GoogleOAuthProvider>
     </>
   )
 }
