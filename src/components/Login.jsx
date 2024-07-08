@@ -40,14 +40,17 @@ function Login() {
         <Home />
       ) : (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
-          <div className="container">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-            <p>Google Auth Integration</p>
+          <div className="h-full p-8 border rounded-xl items-center flex flex-col">
+            <img src={viteLogo} className="w-1/2 pb-4" alt="Vite logo" />
+            <h2 className="text-2xl">Google Auth Integration</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <GoogleLogin
-              onSuccess={combinedSuccessHandler}
-              onError={handleLoginError}
-            />
+            <div className="h-full p-8">
+              <GoogleLogin
+                className="w-1/2 justify-center"
+                onSuccess={combinedSuccessHandler}
+                onError={handleLoginError}
+              />
+            </div>
           </div>
         </GoogleOAuthProvider>
       )}

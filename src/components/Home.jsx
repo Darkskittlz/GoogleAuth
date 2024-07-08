@@ -4,10 +4,9 @@ import viteLogo from '/vite.svg'
 const Home = () => {
   return (
     <>
-      <div className="container">
-        <img src={viteLogo} className="logo" alt="Vite logo" />
-        <h2>Home</h2>
-
+      <div className="p-12 border rounded-xl items-center flex flex-col">
+        <img src={viteLogo} className="w-full pb-4" alt="Vite logo" />
+        <h2 className="text-2xl">Home</h2>
       </div>
     </>
   )
