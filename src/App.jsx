@@ -1,23 +1,30 @@
 import Home from './components/Home';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
+import { GoogleLogin } from '@react-oauth/google';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // Function to handle successful login
+
   const handleLogin = () => {
-    setIsAuthenticated(true);
+    setIsAuthenticated(prevState => !prevState); // Toggle the authentication state
   };
-  // Function to handle logout
+
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    setIsAuthenticated(prevState => !prevState); // Toggle the authentication state
   };
+
+
   return (
     <>
       {isAuthenticated ? (
         <Home onLogout={handleLogout} />
       ) : (
-        <Login onLogin={handleLogin} />
+        <Login>
+          <GoogleLogin
+            onSuccess={handleLogin}
+          />
+        </Login>
       )}
     </>
   );
