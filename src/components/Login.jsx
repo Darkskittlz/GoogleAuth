@@ -10,18 +10,25 @@ import Home from "./Home"
 function Login() {
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [credentialResponse, setCredentialResponse] = useState(null);
 
   const handleLoginSuccess = (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse?.credential);
-    console.log(decoded);
 
     if (decoded.email_verified === true) {
+      console.log("decoded data: ", decoded)
+      setCredentialResponse({
+        ...credentialResponse,
+        picture: decoded.picture,
+        username: decoded.given_name
+      });
       return true;
     } else {
       console.log("Error!");
       return false;
     }
   }
+
 
   const handleLoginError = () => {
     setError('Login failed. Please try again.'); // Set error message for unsuccessful login
@@ -37,7 +44,7 @@ function Login() {
     <>
       <ParticleBackground />
       {isAuthenticated ? (
-        <Home />
+        <Home credentialResponse={credentialResponse} />
       ) : (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
           <div className="h-full p-8 border rounded-xl items-center flex flex-col">
