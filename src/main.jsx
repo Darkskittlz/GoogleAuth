@@ -15,14 +15,6 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route */}
-        {/*   path="/home" */}
-        {/*   element={ */}
-        {/*     <PrivateRoute> */}
-        {/*       <Route path="/home" isAuthenticated={isAuthenticated} element={<Home />} /> */}
-        {/*     </PrivateRoute> */}
-        {/*   } */}
-        {/* /> */}
       </Routes>
     </Router>
   </React.StrictMode>

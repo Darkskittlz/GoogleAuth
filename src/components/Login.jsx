@@ -16,7 +16,6 @@ function Login() {
     const decoded = jwtDecode(credentialResponse?.credential);
 
     if (decoded.email_verified === true) {
-      console.log("decoded data: ", decoded)
       setCredentialResponse({
         ...credentialResponse,
         picture: decoded.picture,
@@ -28,7 +27,6 @@ function Login() {
       return false;
     }
   }
-
 
   const handleLoginError = () => {
     setError('Login failed. Please try again.'); // Set error message for unsuccessful login
@@ -44,19 +42,23 @@ function Login() {
     <>
       <ParticleBackground />
       {isAuthenticated ? (
-        <Home credentialResponse={credentialResponse} />
+        <>
+          <Home credentialResponse={credentialResponse} />
+        </>
       ) : (
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
-          <div className="h-full p-8 border rounded-xl items-center flex flex-col">
-            <img src={viteLogo} className="w-1/2 pb-4" alt="Vite logo" />
-            <h2 className="text-2xl">Google Auth Integration</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <div className="h-full p-8">
-              <GoogleLogin
-                className="w-1/2 justify-center"
-                onSuccess={combinedSuccessHandler}
-                onError={handleLoginError}
-              />
+          <div className="h-full w-full items-center flex flex-col">
+            <div className="w-1/2 flex-col p-4 flex justify-center items-center border rounded-xl">
+              <img src={viteLogo} className="w-1/4 pb-4" alt="Vite logo" />
+              <h2 className="text-2xl">Google Auth Integration</h2>
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+              <div className="h-full p-8">
+                <GoogleLogin
+                  className="w-1/2 justify-center"
+                  onSuccess={combinedSuccessHandler}
+                  onError={handleLoginError}
+                />
+              </div>
             </div>
           </div>
         </GoogleOAuthProvider>
