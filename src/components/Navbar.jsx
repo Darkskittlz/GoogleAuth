@@ -1,44 +1,66 @@
 import '../App.css'
-import { useState, useEffect } from 'react';
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import React, { useState, useEffect, useContext } from 'react'; // Single import statement for all React-related elements
+import styled from 'styled-components';
+import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import LiveIconIMG from "../assets/live.png"
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { clearSession } from '../actions/sessionActions';
+import {
+  Avatar,
+  AppBar,
+  IconButton,
+  Typography,
+  Toolbar,
+  Box,
+  MenuItem,
+  Menu,
+  Button,
+  Icon,
+  ToggleButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText
+} from '@mui/material';
+import ThemeIcon from './ThemeIcon';
+import ThemeContext from './ThemeContext';
 
+const LiveIcon = styled.img`
+  display: flex;
+  width: 20px;
+`
 
-
-const Navbar = ({ credentialResponse }) => {
-  const [avatar, setAvatar] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [auth, setAuth] = React.useState(true);
+// { credentialResponse }
+const Navbar = () => {
+  const { username, token } = useSelector(state => state.session);
+  const [auth, setAuth] = React.useState(!!username);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const avatarSrc = localStorage.getItem('avatar');
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const savedIsAuthenticated = localStorage.getItem('isAuthenticated')
+  });
+  const { toggleTheme } = useContext(ThemeContext);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Placeholder diagnostic log checks strip clear confirming auto sufficient root fixing future expected
+  // console.log("Navbar: username = ", username);
+  // console.log("Navbar: token = ", token);
+  // console.log("Navbar: Avatar SRC from localStorage = ", avatarSrc);
 
   useEffect(() => {
-    if (credentialResponse && typeof credentialResponse === 'object') {
-      const { avatar: picture, username: given_name } = credentialResponse;
-      setAvatar(picture);
-      setUsername(given_name);
+    // Update the state for auth whenever username changes
+    setAuth(!!username);
+  }, [username]);
 
-      // Save to localStorage
-      localStorage.setItem('avatar', picture);
-      localStorage.setItem('username', given_name);
-    } else {
-      console.warn("Invalid credentialResponse format:", credentialResponse);
-    }
-  }, [credentialResponse]);
-
+  const showDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const show = () => {
     setDrawerOpen(!drawerOpen);
@@ -49,14 +71,31 @@ const Navbar = ({ credentialResponse }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const navigateSettings = () => {
     setAnchorEl(null);
+    navigate('/settings');
   };
+
+  const navigateHome = () => {
+    setAnchorEl(null);
+    navigate('/home');
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    setIsAuthenticated(false);
+    dispatch(clearSession());
+    localStorage.removeItem('isAuthenticated');
+    navigate('/');
+  };
+
 
   return (
     <div className="w-full items-center top-0 fixed">
-      <div className="flex  justify-end gap-4 mr-4">
-      </div>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="black" style={{
           border: "1px solid grey",
@@ -69,9 +108,38 @@ const Navbar = ({ credentialResponse }) => {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={show}
+              onClick={showDrawer}
             >
               <MenuIcon className="white" />
+            </IconButton>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            // onClick={show}
+            >
+              <AddIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            // onClick={show}
+            >
+              <LiveIcon src={LiveIconIMG} alt="Live Icon" />    {/* Icon Attribution: Debi Alpa Nugraha */}
+            </IconButton>
+            <IconButton
+              size="medium"
+              edge="start"
+              color="inherit"
+              aria-label="toggle theme"
+              onClick={toggleTheme}
+            >
+              <ThemeIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {/* Cosmate */}
@@ -80,7 +148,6 @@ const Navbar = ({ credentialResponse }) => {
             {auth && (
               <div>
                 <IconButton
-                  src={avatar}
                   size="large"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
@@ -88,7 +155,11 @@ const Navbar = ({ credentialResponse }) => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  {avatarSrc ? (
+                    <Avatar src={avatarSrc} alt={username || "User"} />
+                  ) : (
+                    <AccountCircle />
+                  )}
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -105,8 +176,9 @@ const Navbar = ({ credentialResponse }) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem onClick={navigateHome}>Home</MenuItem>
+                  <MenuItem onClick={navigateSettings}>Settings</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
@@ -120,13 +192,13 @@ const Navbar = ({ credentialResponse }) => {
             className="w-40"
           >
             <List>
-              <ListItem button className="cursor-pointer">
+              <ListItem button="true" className="cursor-pointer">
                 <ListItemText primary="Home" />
               </ListItem>
-              <ListItem button className="cursor-pointer">
+              <ListItem button="true" className="cursor-pointer">
                 <ListItemText primary="Profile" />
               </ListItem>
-              <ListItem button className="cursor-pointer">
+              <ListItem button="true" className="cursor-pointer">
                 <ListItemText primary="Settings" />
               </ListItem>
             </List>

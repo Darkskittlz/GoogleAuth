@@ -1,4 +1,4 @@
-import Home from './components/Home';
+import Home from './pages/home';
 import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
 import { GoogleLogin } from '@react-oauth/google';
@@ -16,7 +16,7 @@ function App() {
 
 
   return (
-    <>
+    <div className='TopLevel'>
       {isAuthenticated ? (
         <Home onLogout={handleLogout} />
       ) : (
@@ -26,7 +26,7 @@ function App() {
           />
         </Login>
       )}
-    </>
+    </div>
   );
 }
 export default App;
