@@ -6,9 +6,9 @@ import { Thumb } from './EmblaCarouselArrowButtons'
 
 
 const slides = [
-  { Emblaimage: "../../public/LargeTransparent_uWu.png", heading: "Sukuna" },
-  { Emblaimage: "../../public/men_logo2.png", heading: "Sukuna" },
-  { Emblaimage: "../../public/GamerGirlLogo.png", heading: "Sukuna" },
+  { Emblaimage: "/LargeTransparent_uWu.png", heading: "Sukuna" },
+  { Emblaimage: "/men_logo2.png", heading: "Sukuna" },
+  { Emblaimage: "/GamerGirlLogo.png", heading: "Sukuna" },
 ];
 
 const EmblaCarousel = (props) => {
