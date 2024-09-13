@@ -10,6 +10,7 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import {
   Avatar,
   AppBar,
@@ -65,7 +66,7 @@ const AvatarIcon = () => {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    setIsAuthenticated(false);
+    setAuth(false);
     dispatch(clearSession());
     localStorage.removeItem('isAuthenticated');
     navigate('/');
@@ -137,7 +138,7 @@ DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
 
-const Settings = ({ credentialResponse, theme, toggleTheme, window: windowProp }) => {
+const Settings = ({ credentialResponse, theme = demoTheme, toggleTheme, window: windowProp }) => {
   const demoWindow = windowProp && windowProp();
 
   const [pathname, setPathname] = React.useState('/home');
@@ -153,6 +154,10 @@ const Settings = ({ credentialResponse, theme, toggleTheme, window: windowProp }
     };
   }, [pathname]);
 
+  const customBranding = {
+    title: username ? `${username}'s Settings` : 'Settings',
+  };
+
   return (
     <>
       <CssBaseline />
@@ -161,6 +166,7 @@ const Settings = ({ credentialResponse, theme, toggleTheme, window: windowProp }
         <div className="w-full backdrop-blur z-10 text-white p-12 rounded-xl h-screen">
           <AppProvider
             className="w-full"
+            branding={customBranding}
             navigation={[
               {
                 segment: 'home',
@@ -173,6 +179,7 @@ const Settings = ({ credentialResponse, theme, toggleTheme, window: windowProp }
                 icon: <DescriptionIcon />,
               },
             ]}
+            session={{ user: { name: username } }}
             router={router}
             theme={demoTheme}
             window={demoWindow}
@@ -183,6 +190,7 @@ const Settings = ({ credentialResponse, theme, toggleTheme, window: windowProp }
               </AppBar>
             </div>
             <DashboardLayout>
+              <DemoPageContent pathname={pathname} />
             </DashboardLayout>
           </AppProvider>
         </div>

@@ -95,7 +95,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="w-full items-center top-0 fixed">
+    <div className="w-full items-center top-0 fixed z-50">
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" color="black" style={{
           border: "1px solid grey",
