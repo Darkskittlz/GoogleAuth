@@ -6,9 +6,9 @@ import { Thumb } from './EmblaCarouselArrowButtons'
 
 
 const slides = [
-  { Emblaimage: "/LargeTransparent_uWu.png", heading: "Sukuna" },
-  { Emblaimage: "/men_logo2.png", heading: "Sukuna" },
   { Emblaimage: "/GamerGirlLogo.png", heading: "Sukuna" },
+  { Emblaimage: "/men_logo2.png", heading: "Sukuna" },
+  { Emblaimage: "/LargeTransparent_uWu.png", heading: "Sukuna" },
 ];
 
 const EmblaCarousel = (props) => {
@@ -43,7 +43,7 @@ const EmblaCarousel = (props) => {
   }, [emblaMainApi, onSelect])
 
   return (
-    <div className="embla flex flex-col items-center justify-center h-auto min-h-screen sm:h-auto">
+    <div className="embla flex flex-col items-center h-auto sm:h-auto">
       <h1 className='text-white text-xl z-40'>COSMATE OF THE MONTH</h1>
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">

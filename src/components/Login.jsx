@@ -57,8 +57,8 @@ function Login() {
       <ParticleBackground />
       {!isAuthenticated &&
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}>
-          <div className="h-full w-full items-center flex flex-col">
-            <div className="w-1/2 flex-col p-4 flex justify-center items-center border rounded-xl">
+          <div className="h-full w-full items-center flex ">
+            <div className="w-1/2 p-4 flex justify-center items-center border rounded-xl">
               <img src={viteLogo} className="w-1/4 pb-4" alt="Vite logo" />
               <h2 className="text-2xl">Google Auth Integration</h2>
               {error && <p style={{ color: 'red' }}>{error}</p>}
